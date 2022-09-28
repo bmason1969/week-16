@@ -11,10 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Jeep {
+  
   private Long modelOK;
   private JeepModel modelId;
   private String trimLevel;
   private int wheelSize;
   private BigDecimal basePrice;
+  private int numDoors;
 
 }
