@@ -22,10 +22,12 @@ import com.promineotech.jeep.entity.JeepModel;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Sql(scripts = {
-    "classpath:flyway/migrations/v1.0 Jeep Schema.sql",
-    "classpath:flyway/migrations/V1.1 Jeep Data.sql"},
+    "classpath:flyway/migrations/V1.0_Jeep_Schema.sql",
+    "classpath:flyway/migrations/V1.1_Jeep_Data.sql"},
     config = @SqlConfig(encoding = "utf-8"))
+
 class FetchJeepTest {
+  
 @Autowired
 private TestRestTemplate restTemplate;
 
@@ -35,6 +37,7 @@ private int serverPort;
 
   @Test
   void testThatJeepsAreReturnedWhenAvalidModelAndTrimAreSupplied() {
+    
     //Given: a valid model, trim and URI
     JeepModel model = JeepModel.WRANGLER;
     String trim = "Sport";
@@ -48,7 +51,7 @@ private int serverPort;
        // HttpMethod.GET, null, new ParameterizedTypeReference<>(){});
     
     //Then: a success (OK - 200) status code is returned
-    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);;
     // And: the actual list returned is the same as the expected list
     List<Jeep> expected = buildExpected();
     assertThat(response.getBody()).isEqualTo(expected);
