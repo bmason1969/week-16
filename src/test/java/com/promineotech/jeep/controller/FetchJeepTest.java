@@ -33,14 +33,12 @@ private TestRestTemplate restTemplate;
 private int serverPort; 
 
 
- @Test
+  @Test
   void testThatJeepsAreReturnedWhenAvalidModelAndTrimAreSupplied() {
     //Given: a valid model, trim and URI
     JeepModel model = JeepModel.WRANGLER;
     String trim = "Sport";
     String uri = String.format("http://localhost:%d/jeeps?model=%s&trim=%s", serverPort, model, trim); 
-    
-    System.out.println(uri);
     
     //When: a connection is made to the URI
     
