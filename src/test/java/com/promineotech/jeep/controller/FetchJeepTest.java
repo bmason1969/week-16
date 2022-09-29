@@ -1,6 +1,8 @@
 package com.promineotech.jeep.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import com.promineotech.jeep.entity.Jeep;
 import com.promineotech.jeep.entity.JeepModel;
+import lombok.Getter;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -29,6 +32,7 @@ import com.promineotech.jeep.entity.JeepModel;
 class FetchJeepTest {
   
 @Autowired
+@Getter
 private TestRestTemplate restTemplate;
 
 @LocalServerPort
@@ -46,20 +50,21 @@ private int serverPort;
     //When: a connection is made to the URI
     
     ResponseEntity<List<Jeep>> response = 
-        restTemplate.exchange(uri, HttpMethod.GET, null, 
+        getRestTemplate().exchange(uri, HttpMethod.GET, null, 
             new ParameterizedTypeReference<>() {});
        // HttpMethod.GET, null, new ParameterizedTypeReference<>(){});
     
     //Then: a success (OK - 200) status code is returned
-    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);;
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     // And: the actual list returned is the same as the expected list
     List<Jeep> expected = buildExpected();
     assertThat(response.getBody()).isEqualTo(expected);
   }
 
   protected List<Jeep> buildExpected() {
+               
+      return null;
     
-    return null;
   }
 
   
