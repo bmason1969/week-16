@@ -56,17 +56,22 @@ private int serverPort;
     
     //Then: a success (OK - 200) status code is returned
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    // And: the actual list returned is the same as the expected list
     List<Jeep> expected = buildExpected();
-    assertThat(response.getBody()).isEqualTo(expected);
-  }
-
-  protected List<Jeep> buildExpected() {
-               
-      return null;
     
-  }
+    assertThat(response.getBody()).isEqualTo(expected);
+}
+    // And: the actual list returned is the same as the expected list
+  protected List<Jeep> buildExpected() {
+    List<Jeep> list = new LinkedList<Jeep>();
+    return list;
+  
+ // List<Jeep> actual = response.getBody();
+   // List <Jeep> expected = buildExpected();
+    
+   // assertThat(actual).isEqualTo(expected);
+    
+   }
+
 
   
-
  }
