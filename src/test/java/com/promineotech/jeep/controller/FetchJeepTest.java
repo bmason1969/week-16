@@ -32,7 +32,7 @@ import lombok.Getter;
 class FetchJeepTest {
   
 @Autowired
-@Getter
+
 private TestRestTemplate restTemplate;
 
 @LocalServerPort
@@ -50,7 +50,7 @@ private int serverPort;
     //When: a connection is made to the URI
     
     ResponseEntity<List<Jeep>> response = 
-        getRestTemplate().exchange(uri, HttpMethod.GET, null, 
+        restTemplate.exchange(uri, HttpMethod.GET, null, 
             new ParameterizedTypeReference<>() {});
        // HttpMethod.GET, null, new ParameterizedTypeReference<>(){});
     
@@ -62,7 +62,25 @@ private int serverPort;
 }
     // And: the actual list returned is the same as the expected list
   protected List<Jeep> buildExpected() {
-    List<Jeep> list = new LinkedList<Jeep>();
+    List<Jeep> list = new LinkedList<>();
+  //@formatter:off
+  list.add(Jeep.builder()
+      .modelId(JeepModel.WRANGLER)
+      .trimLevel("Sport")
+      .numDoors(2)
+      .wheelSize(17)
+      .basePrice(new BigDecimal("28475.00"))
+      .build());
+  
+  list.add(Jeep.builder()
+      .modelId(JeepModel.WRANGLER)
+      .trimLevel("Sport")
+      .numDoors(4)
+      .wheelSize(17)
+      .basePrice(new BigDecimal("31975.00"))
+      .build());
+  //@formatter:on
+  
     return list;
   
  // List<Jeep> actual = response.getBody();
