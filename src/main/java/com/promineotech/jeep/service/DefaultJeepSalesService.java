@@ -24,7 +24,7 @@ public class DefaultJeepSalesService implements JeepSalesService {
     List<Jeep> jeeps = jeepSalesDao.fetchJeeps(model, trim);
     
    Collections.sort(jeeps);
-    return jeeps;
+    return jeepSalesDao.fetchJeeps(model, trim);
   }
 
 }

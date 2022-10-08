@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import com.promineotech.jeep.controller.support.FetchJeepTestSupport;
 import com.promineotech.jeep.entity.Jeep;
 import com.promineotech.jeep.entity.JeepModel;
 import lombok.Getter;
@@ -29,10 +30,10 @@ import lombok.Getter;
     "classpath:flyway/migrations/V1.1__Jeep_Data.sql"},
     config = @SqlConfig(encoding = "utf-8"))
 
-class FetchJeepTest {
+class FetchJeepTest extends FetchJeepTestSupport {
   
 @Autowired
-
+@Getter
 private TestRestTemplate restTemplate;
 
 @LocalServerPort
@@ -45,50 +46,69 @@ private int serverPort;
     //Given: a valid model, trim and URI
     JeepModel model = JeepModel.WRANGLER;
     String trim = "Sport";
-    String uri = String.format("http://localhost:%d/jeeps?model=%s&trim=%s", serverPort, model, trim); 
-    
+    //String uri = 
+        //String.format("http://localhost:%d/jeeps?model=%s&trim=%s", serverPort, model, trim); 
+     String uri = 
+        String.format("%s?model=%s&trim=%s", getBaseUri(), model, trim);
     //When: a connection is made to the URI
     
     ResponseEntity<List<Jeep>> response = 
-        restTemplate.exchange(uri, HttpMethod.GET, null, 
+        getRestTemplate().exchange(uri, HttpMethod.GET, null, 
             new ParameterizedTypeReference<>() {});
        // HttpMethod.GET, null, new ParameterizedTypeReference<>(){});
     
     //Then: a success (OK - 200) status code is returned
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    List<Jeep> expected = buildExpected();
     
-    assertThat(response.getBody()).isEqualTo(expected);
-}
-    // And: the actual list returned is the same as the expected list
-  protected List<Jeep> buildExpected() {
-    List<Jeep> list = new LinkedList<>();
-  //@formatter:off
-  list.add(Jeep.builder()
-      .modelId(JeepModel.WRANGLER)
-      .trimLevel("Sport")
-      .numDoors(2)
-      .wheelSize(17)
-      .basePrice(new BigDecimal("28475.00"))
-      .build());
-  
-  list.add(Jeep.builder()
-      .modelId(JeepModel.WRANGLER)
-      .trimLevel("Sport")
-      .numDoors(4)
-      .wheelSize(17)
-      .basePrice(new BigDecimal("31975.00"))
-      .build());
-  //@formatter:on
-  
-    return list;
-  
- // List<Jeep> actual = response.getBody();
-   // List <Jeep> expected = buildExpected();
+ // And: the actual list returned is the same as the expected list
     
-   // assertThat(actual).isEqualTo(expected);
+    List<Jeep> actual = response.getBody();
+    List <Jeep> expected = buildExpected();
     
-   }
+    actual.forEach(jeep -> jeep.setModelPK(null));
+    
+    assertThat(actual).isEqualTo(expected);
+    
+  }
+
+ 
+    
+     
+    
+     
+
+  
+
+  
+    
+
+
+//
+//    // And: the actual list returned is the same as the expected list
+//  protected List<Jeep> buildExpected() {
+//    List<Jeep> list = new LinkedList<>();
+//  //@formatter:off
+//  list.add(Jeep.builder()
+//      .modelId(JeepModel.WRANGLER)
+//      .trimLevel("Sport")
+//      .numDoors(2)
+//      .wheelSize(17)
+//      .basePrice(new BigDecimal("28475.00"))
+//      .build());
+//  
+//  list.add(Jeep.builder()
+//      .modelId(JeepModel.WRANGLER)
+//      .trimLevel("Sport")
+//      .numDoors(4)
+//      .wheelSize(17)
+//      .basePrice(new BigDecimal("31975.00"))
+//      .build());
+//  //@formatter:on
+//  
+//    return list;
+//  
+// 
+//   }
 
 
   
